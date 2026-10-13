@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Alto</title>
+    <link rel="icon" href="/favicon.svg" />
+    <link rel="stylesheet" href="/static/app.css" />
+  </head>
+  <body>
+    <div class="gate" id="gate" data-mode="login">
+      <form class="gate-card" id="gate-form">
+        <div class="gate-brand">
+          <span class="mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32">
+              <path d="M8 22h16M16 22V9M16 9l-5 5M16 9l5 5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <div>
+            <strong>Alto</strong>
+            <em>Upscale para impressão</em>
+          </div>
+        </div>
+        <h1 id="gate-title">Entrar</h1>
+        <p class="hint" id="gate-lead">A mesma conta libera o aumento neste computador e no serviço.</p>
+        <label>
+          E-mail
+          <input id="gate-email" type="email" autocomplete="username" required />
+        </label>
+        <label>
+          Senha
+          <input id="gate-password" type="password" autocomplete="current-password" minlength="8" required />
+        </label>
+        <p class="notice" id="gate-error" hidden></p>
+        <button class="go" id="gate-submit" type="submit">Entrar</button>
+        <button class="gate-switch" id="gate-switch" type="button">Criar conta</button>
+        <p class="hint">Os primeiros 14 dias são de avaliação. A mensalidade entra quando a cobrança estiver ligada.</p>
+      </form>
+    </div>
+    <aside class="sidebar" inert>
+      <header class="brand">
+        <span class="mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32">
+            <path d="M8 22h16M16 22V9M16 9l-5 5M16 9l5 5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <div>
+          <strong>Alto</strong>
+          <em>Upscale para impressão</em>
+        </div>
+      </header>
+
+      <div class="tabs" role="tablist">
+        <button type="button" class="tab on" data-tab="work" role="tab">Ampliar</button>
+        <button type="button" class="tab" data-tab="settings" role="tab">Ajustes</button>
+      </div>
+
+      <div class="side-scroll" id="panel-work">
+        <div class="mode" role="group" aria-label="O que ampliar">
+          <button type="button" class="on" data-mode="image">Imagem</button>
+          <button type="button" data-mode="folder">Pasta</button>
+        </div>
+
+        <section class="step">
+          <h2><span>1</span> Origem</h2>
+          <div id="pick-image-row">
+            <button type="button" class="choice" id="pick-image">Escolher imagem</button>
+            <p class="hint" id="image-name">ou solte o arquivo no painel ao lado</p>
+          </div>
+          <div id="pick-folder-row" hidden>
+            <button type="button" class="choice" id="pick-folder">Escolher pasta</button>
+            <p class="hint" id="folder-name">Todas as imagens da pasta, sem entrar em subpastas.</p>
+          </div>
+        </section>
+
+        <section class="step">
+          <h2><span>2</span> Modelo</h2>
+          <div class="models" id="models"></div>
+        </section>
+
+        <section class="step">
+          <h2><span>3</span> Tamanho</h2>
+          <div class="mode" role="group" aria-label="Como definir o tamanho">
+            <button type="button" class="on" data-size="scale">Escala</button>
+            <button type="button" data-size="print">Impressão</button>
+          </div>
+          <div class="scales" id="scale-row">
+            <button type="button" data-scale="2">2×</button>
+            <button type="button" data-scale="4" class="on">4×</button>
+            <button type="button" data-scale="8">8×</button>
+          </div>
+          <div id="print-row" hidden>
+            <div class="papers" id="papers">
+              <button type="button" data-paper="A4">A4</button>
+              <button type="button" data-paper="A3" class="on">A3</button>
+              <button type="button" data-paper="A2">A2</button>
+              <button type="button" data-paper="A1">A1</button>
+              <button type="button" data-paper="custom">cm</button>
+            </div>
+            <label class="field" id="custom-wrap" hidden>
+              Lado maior
+              <span><input id="custom-cm" type="number" min="5" max="150" step="1" value="50" /> cm</span>
+            </label>
+          </div>
+          <label class="field">
+            DPI
+            <select id="dpi">
+              <option value="150">150 · prova</option>
+              <option value="300" selected>300 · gráfica</option>
+              <option value="360">360 · fine art</option>
+            </select>
+          </label>
+          <div class="forecast" id="forecast" hidden>
+            <strong id="forecast-px"></strong>
+            <span id="forecast-cm"></span>
+            <p id="forecast-note"></p>
+          </div>
+        </section>
+
+        <section class="step">
+          <h2><span>4</span> Saída</h2>
+          <div class="scales" id="formats">
+            <button type="button" data-format="png" class="on">PNG</button>
+            <button type="button" data-format="jpg">JPG</button>
+            <button type="button" data-format="webp">WEBP</button>
+          </div>
+          <p class="hint" id="format-hint">PNG guarda o detalhe. É o arquivo certo para imprimir.</p>
+          <label class="field" id="quality-wrap" hidden>
+            Qualidade
+            <span><input id="quality" type="range" min="70" max="100" value="95" /> <b id="quality-value">95</b></span>
+          </label>
+          <label class="field path-field">
+            Pasta
+            <span>
+              <input id="output-dir" type="text" spellcheck="false" />
+              <button type="button" id="pick-output">Escolher</button>
+            </span>
+          </label>
+        </section>
+      </div>
+
+      <div class="side-scroll" id="panel-settings" hidden>
+        <section class="step">
+          <h2>Placa e memória</h2>
+          <label class="field">
+            Bloco
+            <select id="tile">
+              <option value="0">Automático</option>
+              <option value="128">128 · placas com pouca memória</option>
+              <option value="256">256</option>
+              <option value="384">384</option>
+              <option value="512">512</option>
+            </select>
+          </label>
+          <p class="hint">Se o aumento falhar no meio, use 128. O automático já reduz o bloco em imagens grandes.</p>
+          <label class="field">
+            GPU
+            <input id="gpu" type="text" inputmode="numeric" placeholder="Automática" />
+          </label>
+          <label class="check">
+            <input id="tta" type="checkbox" />
+            <span>Passagem extra nas bordas. Fica mais lento e um pouco mais estável.</span>
+          </label>
+        </section>
+        <section class="step">
+          <h2>Modelos extras</h2>
+          <p class="hint">Coloque pares de arquivos .param e .bin numa pasta. Eles entram na lista ao lado dos modelos incluídos.</p>
+          <label class="field path-field">
+            Pasta
+            <span>
+              <input id="custom-models" type="text" spellcheck="false" />
+              <button type="button" id="pick-models">Escolher</button>
+            </span>
+          </label>
+        </section>
+        <section class="step">
+          <h2>Serviço</h2>
+          <p class="hint">Deixe vazio se a placa deste computador faz o aumento. Nos outros computadores, cole o endereço do servidor que tem a placa.</p>
+          <label class="field path-field">
+            Endereço
+            <span>
+              <input id="service-url" type="text" spellcheck="false" placeholder="https://" />
+            </span>
+          </label>
+        </section>
+        <section class="step">
+          <h2>Registro</h2>
+          <pre id="log">O registro aparece aqui durante o aumento.</pre>
+        </section>
+      </div>
+
+      <div class="go-wrap">
+        <p class="notice" id="notice" hidden></p>
+        <div class="meter" id="meter" hidden>
+          <div id="meter-bar"></div>
+        </div>
+        <p class="meter-label" id="meter-label" aria-live="polite"></p>
+        <button type="button" class="go" id="go" disabled>Ampliar</button>
+      </div>
+    </aside>
+
+    <main inert>
+      <header class="top">
+        <div>
+          <p id="crumb">Nenhuma imagem</p>
+          <p id="subcrumb">Verificando este computador…</p>
+        </div>
+        <div class="top-actions">
+          <div class="account" id="account" hidden>
+            <div class="account-text">
+              <strong id="account-email"></strong>
+              <span id="account-plan"></span>
+            </div>
+            <button type="button" id="account-pay">Pagamento</button>
+            <button type="button" id="logout">Sair</button>
+          </div>
+          <button type="button" id="open-file" hidden>Abrir arquivo</button>
+          <button type="button" id="open-folder" hidden>Abrir pasta</button>
+        </div>
+      </header>
+      <div class="stage" id="stage">
+        <div class="empty" id="empty">
+          <div class="drop-ring" aria-hidden="true"></div>
+          <h1>Solte a imagem aqui</h1>
+          <p>Foto ou ilustração. O resultado pode ir para papel grande, em 300 DPI.</p>
+        </div>
+        <div class="viewer single" id="single" hidden>
+          <img id="single-img" alt="Imagem escolhida" />
+        </div>
+        <div class="viewer compare" id="compare" hidden>
+          <img id="after" alt="Resultado do upscale" />
+          <div id="clip">
+            <img id="before" alt="Imagem original" />
+          </div>
+          <span class="tag before-tag">Antes</span>
+          <span class="tag after-tag">Depois</span>
+          <div class="handle" id="handle"></div>
+          <input id="wipe" type="range" min="0" max="1000" value="500" aria-label="Comparar antes e depois" />
+        </div>
+        <div class="overlay" id="overlay" hidden>
+          <div class="meter overlay-meter"><div id="overlay-bar"></div></div>
+          <p id="overlay-label"></p>
+        </div>
+      </div>
+      <footer class="statusline">
+        <span id="engine-line">Preparando o motor Real-ESRGAN…</span>
+        <span id="file-line"></span>
+      </footer>
+    </main>
+    <input id="file-input" type="file" accept="image/png,image/jpeg,image/webp,image/bmp,image/tiff" hidden />
+    <script src="/static/app.js"></script>
+  </body>
+</html>

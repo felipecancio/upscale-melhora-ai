@@ -1,0 +1,10 @@
+vendor/
+vendor-download.zip
+trabalho/
+saida/
+modelos/
+alto-config.json
+alto-data/
+.env
+__pycache__/
+*.pyc
